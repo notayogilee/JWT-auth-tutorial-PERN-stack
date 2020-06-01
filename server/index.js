@@ -13,6 +13,12 @@ app.use(cors());
 
 app.use('/auth', require('./routes/jwtAuth'));
 
-app.listen(1234, () => {
-  console.log(`Server is running on port 1234`);
+// Dashboard route
+
+app.use('/dashboard', require('./routes/dashboard'));
+
+const PORT = process.env.PORT || 1234;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });

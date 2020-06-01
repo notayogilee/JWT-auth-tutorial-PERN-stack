@@ -1,12 +1,13 @@
 const router = require('express').Router();
 const pool = require('../db');
-
 const bcrypt = require('bcrypt');
 const jwtGenerator = require('../utils/jwtGenerator');
+const validInfo = require('../middleware/validInfo');
+const authorization = require('../middleware/authorization');
 
 // Registering
 
-router.post('/register', async (req, res) => {
+router.post('/register', validInfo, async (req, res) => {
   try {
 
     // destructure req.body
@@ -49,7 +50,7 @@ router.post('/register', async (req, res) => {
 
 // Login route
 
-router.post('/login', async (req, res) => {
+router.post('/login', validInfo, async (req, res) => {
   try {
 
     // destructure the req.body
@@ -81,6 +82,17 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
+  }
+});
+
+router.get('/verify', authorization, async (req, res) => {
+  try {
+
+    await res.json(true);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
   }
 })
 
