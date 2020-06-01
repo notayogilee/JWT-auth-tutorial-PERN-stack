@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import './App.css';
 
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
@@ -9,17 +9,24 @@ import Login from './components/Login';
 
 function App() {
 
-  return (<Fragment>
-    <Router>
-      <div className="container">
-        <Switch>
-          <Route exact path="/login" render={props => <Login {...props} />} />
-          <Route exact path="/register" render={props => <Register {...props} />} />
-          <Route exact path="/dashboard" render={props => <Dashboard {...props} />} />
-        </Switch>
-      </div>
-    </Router>
-  </Fragment>
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const setAuth = (boolean) => {
+    setIsAuthenticated(boolean);
+  }
+
+  return (
+    <Fragment>
+      <Router>
+        <div className="container">
+          <Switch>
+            <Route exact path="/login" render={props => !isAuthenticated ? (<Login {...props} setAuth={setAuth} />) : (<Redirect to="/dashboard" />)} />
+            <Route exact path="/register" render={props => !isAuthenticated ? (<Register {...props} setAuth={setAuth} />) : (<Redirect to="/login" />)} />
+            <Route exact path="/dashboard" render={props => isAuthenticated ? (<Dashboard {...props} setAuth={setAuth} />) : (<Redirect to="/login" />)} />
+          </Switch>
+        </div>
+      </Router>
+    </Fragment>
   );
 };
 
