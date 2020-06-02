@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Register = ({ setAuth }) => {
 
@@ -19,7 +20,7 @@ const Register = ({ setAuth }) => {
 
     try {
 
-      const body = await { name, email, password };
+      const body = { name, email, password };
 
       const response = await fetch('http://localhost:1234/auth/register', {
         method: 'POST',
@@ -68,6 +69,7 @@ const Register = ({ setAuth }) => {
         />
         <button className="btn btn-success btn-block">Submit</button>
       </form>
+      <Link to="/login">Login</Link>
     </Fragment>
   );
 };
